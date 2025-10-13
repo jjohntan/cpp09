@@ -6,11 +6,21 @@
 /*   By: jetan <jetan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 13:51:50 by jetan             #+#    #+#             */
-/*   Updated: 2025/10/13 16:31:08 by jetan            ###   ########.fr       */
+/*   Updated: 2025/10/13 17:22:03 by jetan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "BitcoinExchange.hpp"
+
+void BitcoinExchange::loadDataBase(const std::string &filename)
+{
+	std::ifstream ifs(filename.c_str());
+	
+	if (!ifs.is_open())
+	{
+		std::cerr << "Error: could not open file." << std::endl;
+	}
+}
 
 BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
 {
