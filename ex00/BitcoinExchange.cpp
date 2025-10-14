@@ -6,7 +6,7 @@
 /*   By: jetan <jetan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 13:51:50 by jetan             #+#    #+#             */
-/*   Updated: 2025/10/14 17:07:20 by jetan            ###   ########.fr       */
+/*   Updated: 2025/10/14 21:34:58 by jetan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,21 @@ void BitcoinExchange::loadDataBase(const std::string &filename)
 	while (std::getline(ifs, line))
 	{
 		// std::cout << line << std::endl;
+		std::stringstream ss(line);
 		std::string date, value;
-		std::getline(ifs, date, ',');
+		std::getline(ss, date, ',');
 		// std::cout << "date: " << date << std::endl;
-		std::getline(ifs, value);
+		std::getline(ss, value);
 		// std::cout << "value: " << value << std::endl;
+		std::stringstream convert(value) ;
+		float fvalue;
+		convert >> fvalue;
+		_database[date] = fvalue;
 	}
+	// for (std::map<std::string, float>::iterator it = _database.begin(); it != _database.end(); it++)
+	// {
+	// 	std::cout << "date: " << it->first << " value: " << it->second << std::endl;
+	// }
 	ifs.close();
 }
 
