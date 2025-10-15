@@ -6,7 +6,7 @@
 /*   By: jetan <jetan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 13:51:50 by jetan             #+#    #+#             */
-/*   Updated: 2025/10/15 19:43:08 by jetan            ###   ########.fr       */
+/*   Updated: 2025/10/15 20:25:06 by jetan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,14 @@ bool BitcoinExchange::validDate(std::string &date)
 	std::string str_year, str_month, str_day;
 	std::stringstream ss(date);
 	
+	// extract year, month, and day
 	if (!std::getline(ss, str_year, '-') || !std::getline(ss, str_month, '-') || !std::getline(ss, str_day, '-'))
 		return false;
 	
 	std::stringstream year_ss(str_year), month_ss(str_month), day_ss(str_day);
 	unsigned int year, month, day;
 	
+	// convert to unsigned int
 	year_ss >> year;
 	month_ss >> month;
 	day_ss >> day;
@@ -54,10 +56,13 @@ bool BitcoinExchange::validFormat(const std::string &line, std::string &date)
 	std::stringstream ss(line);
 	std::getline(ss, date, '|');// extract the date
 	// Each line check following format: "date | value"
-	if (line.find(" | ") == std::string::npos)
+	if (line.find(" | ") == std::string::npos || !validDate(date))
+	{
+		std::cerr << "Error: bad input => " << date << std::endl;
 		return false;
-	if (!validDate(date))
-		return false;
+	}
+	// if (!validDate(date))
+	// 	return false;
 	return true;
 }
 
@@ -80,22 +85,23 @@ void BitcoinExchange::takeInput(const std::string &filename)
 		// std::cout << line << std::endl;
 		std::string date, value;
 		if (!validFormat(line, date))
-		{
-			std::cerr << "Error: bad input => " << date << std::endl;
 			continue;
-		}
-		std::stringstream ss(line);
-		std::getline(ss, date, '|');// extract the date
 		// std::cout << "date: " << date << std::endl;
-		std::getline(ss, value);// extract the value
+		// if (!validValue())
+		// {
+		// 	std::cerr << "Error: not a positive number." << std::endl;
+		// 	continue;
+		// }
+		// std::cerr << "Error: too large a number." << std::endl;
+		// std::getline(ss, value);// extract the value
 		// std::cout << "value: " << value << std::endl;
-		std::stringstream convert(value);
-		float fvalue;
-		convert >> fvalue;
+		// std::stringstream convert(value);
+		// float fvalue;
+		// convert >> fvalue;
 		// _database[date] = fvalue;
 		// std::cout << std::fixed << std::setprecision(2) << fvalue;
+		// evaluate();
 	}
-	// evaluate();
 	ifs.close();
 }
 
