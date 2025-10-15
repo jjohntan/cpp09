@@ -6,7 +6,7 @@
 /*   By: jetan <jetan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 13:51:47 by jetan             #+#    #+#             */
-/*   Updated: 2025/10/13 17:25:27 by jetan            ###   ########.fr       */
+/*   Updated: 2025/10/15 13:14:20 by jetan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int main(int ac, char **av)
 {
 	if (ac != 2)
 	{
-		std::cerr << "Error: program must take a file as argument." << std::endl;
+		std::cerr << "Error: could not open file." << std::endl;
 		return 1;
 	}
 	(void)av;

@@ -6,13 +6,14 @@
 /*   By: jetan <jetan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 13:51:55 by jetan             #+#    #+#             */
-/*   Updated: 2025/10/14 19:45:49 by jetan            ###   ########.fr       */
+/*   Updated: 2025/10/15 13:11:39 by jetan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BITCOINEXCHANGE_HPP
 # define BITCOINEXCHANGE_HPP
 
+#include <iomanip>
 #include <sstream>
 #include <string>
 #include <map>
@@ -22,7 +23,7 @@
 class BitcoinExchange
 {
 private:
-	std::map<std::string, float> _database;
+	std::map<std::string, double> _database;
 public:
 	BitcoinExchange();// Default constructor
 	BitcoinExchange(const BitcoinExchange &other);// Copy constructor
