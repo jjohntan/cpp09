@@ -6,7 +6,7 @@
 /*   By: jetan <jetan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 13:51:50 by jetan             #+#    #+#             */
-/*   Updated: 2025/10/15 15:36:20 by jetan            ###   ########.fr       */
+/*   Updated: 2025/10/15 15:39:07 by jetan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 bool BitcoinExchange::validFormat(const std::string &line)
 {
-	if (line.find("|") == std::string::npos)
+	if (line.find(" | ") == std::string::npos)
 		return false;
+	
 	return true;
 }
 
