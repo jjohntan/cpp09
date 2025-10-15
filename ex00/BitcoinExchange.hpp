@@ -6,7 +6,7 @@
 /*   By: jetan <jetan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 13:51:55 by jetan             #+#    #+#             */
-/*   Updated: 2025/10/15 13:30:21 by jetan            ###   ########.fr       */
+/*   Updated: 2025/10/15 14:02:18 by jetan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ public:
 	BitcoinExchange(const BitcoinExchange &other);// Copy constructor
 	BitcoinExchange &operator=(const BitcoinExchange &other);// Copy assignment operator
 	~BitcoinExchange();// Destructor
-	void loadDataBase(const std::string &filename);
+	void loadDataBasecsv(const std::string &filename);
 	void takeInput(const std::string &filename);
 };
 
