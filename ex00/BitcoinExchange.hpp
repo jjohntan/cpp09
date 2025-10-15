@@ -6,14 +6,14 @@
 /*   By: jetan <jetan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 13:51:55 by jetan             #+#    #+#             */
-/*   Updated: 2025/10/15 14:55:06 by jetan            ###   ########.fr       */
+/*   Updated: 2025/10/15 19:39:06 by jetan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BITCOINEXCHANGE_HPP
 # define BITCOINEXCHANGE_HPP
 
-// #include <>
+#include <cstdlib>
 #include <iomanip>
 #include <sstream>
 #include <string>
@@ -33,7 +33,9 @@ public:
 	void loadDataBasecsv(const std::string &filename);
 	void takeInput(const std::string &filename);
 	
-	bool validFormat(const std::string &line);
+	bool validFormat(const std::string &line, std::string &date);
+	bool validDate(std::string &date);
+	bool isLeapYear(unsigned int year);
 };
 
 #endif

@@ -6,17 +6,58 @@
 /*   By: jetan <jetan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 13:51:50 by jetan             #+#    #+#             */
-/*   Updated: 2025/10/15 15:39:07 by jetan            ###   ########.fr       */
+/*   Updated: 2025/10/15 19:43:08 by jetan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "BitcoinExchange.hpp"
 
-bool BitcoinExchange::validFormat(const std::string &line)
+bool BitcoinExchange::isLeapYear(unsigned int year)
 {
-	if (line.find(" | ") == std::string::npos)
+	if (year % 400)
+		return true;
+	if (year % 100)
+		return false;
+	if (year % 4)
+		return true;
+	return false;
+}
+
+bool BitcoinExchange::validDate(std::string &date)
+{
+	std::string str_year, str_month, str_day;
+	std::stringstream ss(date);
+	
+	if (!std::getline(ss, str_year, '-') || !std::getline(ss, str_month, '-') || !std::getline(ss, str_day, '-'))
 		return false;
 	
+	std::stringstream year_ss(str_year), month_ss(str_month), day_ss(str_day);
+	unsigned int year, month, day;
+	
+	year_ss >> year;
+	month_ss >> month;
+	day_ss >> day;
+	
+	unsigned int monthlen[] = {31,28,31,30,31,30,31,31,30,31,30,31};
+	
+	if (!year || !month || !day || month > 12)
+		return false;
+	if (isLeapYear(year) || month == 2)
+		monthlen[1]++;
+	if (day > monthlen[month - 1])
+		return false;
+	return true;
+}
+
+bool BitcoinExchange::validFormat(const std::string &line, std::string &date)
+{	
+	std::stringstream ss(line);
+	std::getline(ss, date, '|');// extract the date
+	// Each line check following format: "date | value"
+	if (line.find(" | ") == std::string::npos)
+		return false;
+	if (!validDate(date))
+		return false;
 	return true;
 }
 
@@ -37,13 +78,13 @@ void BitcoinExchange::takeInput(const std::string &filename)
 	while (std::getline(ifs, line))
 	{
 		// std::cout << line << std::endl;
-		if (!validFormat(line))
+		std::string date, value;
+		if (!validFormat(line, date))
 		{
-			std::cerr << "Error: bad input => " << std::endl;// hhhhhhhhhhhhhhhhhhhhhhh
+			std::cerr << "Error: bad input => " << date << std::endl;
 			continue;
 		}
 		std::stringstream ss(line);
-		std::string date, value;
 		std::getline(ss, date, '|');// extract the date
 		// std::cout << "date: " << date << std::endl;
 		std::getline(ss, value);// extract the value
@@ -55,6 +96,7 @@ void BitcoinExchange::takeInput(const std::string &filename)
 		// std::cout << std::fixed << std::setprecision(2) << fvalue;
 	}
 	// evaluate();
+	ifs.close();
 }
 
 void BitcoinExchange::loadDataBasecsv(const std::string &filename)
