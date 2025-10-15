@@ -6,11 +6,18 @@
 /*   By: jetan <jetan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 13:51:50 by jetan             #+#    #+#             */
-/*   Updated: 2025/10/15 14:38:21 by jetan            ###   ########.fr       */
+/*   Updated: 2025/10/15 15:36:20 by jetan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "BitcoinExchange.hpp"
+
+bool BitcoinExchange::validFormat(const std::string &line)
+{
+	if (line.find("|") == std::string::npos)
+		return false;
+	return true;
+}
 
 void BitcoinExchange::takeInput(const std::string &filename)
 {
@@ -25,14 +32,20 @@ void BitcoinExchange::takeInput(const std::string &filename)
 	std::string line;
 	std::getline(ifs, line);// skip the first line
 
+	// Each line
 	while (std::getline(ifs, line))
 	{
 		// std::cout << line << std::endl;
+		if (!validFormat(line))
+		{
+			std::cerr << "Error: bad input => " << std::endl;// hhhhhhhhhhhhhhhhhhhhhhh
+			continue;
+		}
 		std::stringstream ss(line);
 		std::string date, value;
-		std::getline(ss, date, '|');
+		std::getline(ss, date, '|');// extract the date
 		// std::cout << "date: " << date << std::endl;
-		std::getline(ss, value);
+		std::getline(ss, value);// extract the value
 		// std::cout << "value: " << value << std::endl;
 		std::stringstream convert(value);
 		float fvalue;
@@ -55,14 +68,15 @@ void BitcoinExchange::loadDataBasecsv(const std::string &filename)
 	
 	std::string line;
 	std::getline(ifs, line);// skip the first line
+	// Each line
 	while (std::getline(ifs, line))
 	{
 		// std::cout << line << std::endl;
 		std::stringstream ss(line);
 		std::string date, value;
-		std::getline(ss, date, ',');
+		std::getline(ss, date, ',');// extract the date
 		// std::cout << "date: " << date << std::endl;
-		std::getline(ss, value);
+		std::getline(ss, value);// extract the value
 		// std::cout << "value: " << value << std::endl;
 		std::stringstream convert(value);
 		float fvalue;
