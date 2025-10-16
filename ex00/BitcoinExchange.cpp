@@ -6,7 +6,7 @@
 /*   By: jetan <jetan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 13:51:50 by jetan             #+#    #+#             */
-/*   Updated: 2025/10/16 10:47:01 by jetan            ###   ########.fr       */
+/*   Updated: 2025/10/16 14:43:39 by jetan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,17 @@ bool BitcoinExchange::isLeapYear(unsigned int year)
 
 float BitcoinExchange::exchangeRate(std::map<std::string, float> &_database, const std::string &date)
 {
+	// Returns an iterator to the element with greater than or equal to date
 	std::map<std::string, float>::iterator it = _database.lower_bound(date);
+	// date is later than any key or no exact match found
 	if (it == _database.end() || it->first != date)
 	{
+		// if not found, step one backward
 		if (it == _database.begin())
 			return -1;
 		--it;
 	}
+	// return value
 	return it->second;
 }
 
@@ -95,22 +99,32 @@ bool BitcoinExchange::validFormat(const std::string &line, std::string &date, fl
 	std::getline(ss, date, '|');// extract the date
 	std::getline(ss, value);// extract the value
 	
-	std::cout << "space date: " << date << std::endl;
-	std::cout << "remove space value: " << value << std::endl;
 	// trim leading space
 	date.erase(0, date.find_first_not_of(" \t"));
+	date.erase(date.find_first_not_of(" \t") + 1);
 	value.erase(0, value.find_first_not_of(" \t"));
-	std::cout << "remove space date: " << date << std::endl;
-	std::cout << "remove space value: " << value << std::endl;
+	value.erase(value.find_first_not_of(" \t") + 1);
+	
+	if (date.empty() || value.empty())
+	{
+		std::cerr << "Error: bad input => " << line << std::endl;
+		return false;
+	}
+	
 	std::stringstream convert(value);
 	
-	convert >> fvalue;
+	if (!(convert >> fvalue))
+	{
+		std::cerr << "Error: bad input => " << line << std::endl;
+		return false;
+	}
 	
 	if (!validDate(date))
 	{
 		std::cerr << "Error: bad input => " << date << std::endl;
 		return false;
 	}
+	
 	if (!validValue(fvalue))
 		return false;
 	return true;
@@ -127,7 +141,17 @@ void BitcoinExchange::takeInput(const std::string &filename)
 	}
 	
 	std::string line;
-	std::getline(ifs, line);// skip the first line
+	if (!std::getline(ifs, line))// skip the first line
+	{
+		std::cerr << "Error: could not open file." << std::endl;
+		return ;
+	}
+	
+	if (line != "date | value")
+	{
+		std::cerr << "Error: could not open file." << std::endl;
+		return ;
+	}
 
 	// Each line
 	while (std::getline(ifs, line))
@@ -140,6 +164,7 @@ void BitcoinExchange::takeInput(const std::string &filename)
 		float rate = exchangeRate(_database, date);
 		if (rate < 0)
 			continue;
+		// print result
 		std::cout << date << " => " << fvalue << " = " << fvalue * rate << std::endl;
 	}
 	ifs.close();
