@@ -6,7 +6,7 @@
 /*   By: jetan <jetan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 13:51:50 by jetan             #+#    #+#             */
-/*   Updated: 2025/10/16 09:08:59 by jetan            ###   ########.fr       */
+/*   Updated: 2025/10/16 09:39:25 by jetan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,18 @@ bool BitcoinExchange::isLeapYear(unsigned int year)
 	if (year % 4)
 		return true;
 	return false;
+}
+
+float BitcoinExchange::exchangeRate(std::map<std::string, float> &_database, const std::string &date)
+{
+	std::map<std::string, float>::iterator it = _database.lower_bound(date);
+	if (it == _database.end() || it->first != date)
+	{
+		if (it == _database.begin())
+			return -1;
+		--it;
+	}
+	return it->second;
 }
 
 bool BitcoinExchange::validValue(float &fvalue)
@@ -118,7 +130,10 @@ void BitcoinExchange::takeInput(const std::string &filename)
 		float fvalue;
 		if (!validFormat(line, date, fvalue))
 			continue;
-		
+		float rate = exchangeRate(_database, date);
+		if (rate < 0)
+			continue;
+		std::cout << date << " => " << fvalue << " = " << fvalue * rate << std::endl;
 	}
 	ifs.close();
 }
