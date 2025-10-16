@@ -6,7 +6,7 @@
 /*   By: jetan <jetan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 13:51:50 by jetan             #+#    #+#             */
-/*   Updated: 2025/10/15 20:25:06 by jetan            ###   ########.fr       */
+/*   Updated: 2025/10/16 09:08:59 by jetan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,21 @@ bool BitcoinExchange::isLeapYear(unsigned int year)
 	if (year % 4)
 		return true;
 	return false;
+}
+
+bool BitcoinExchange::validValue(float &fvalue)
+{
+	if (fvalue < 0)
+	{
+		std::cout << "Error: not a positive number." << std::endl;
+		return false;
+	}
+	if (fvalue > 1000)
+	{
+		std::cout << "Error: too large a number." << std::endl;
+		return false;
+	}
+	return true;
 }
 
 bool BitcoinExchange::validDate(std::string &date)
@@ -51,18 +66,34 @@ bool BitcoinExchange::validDate(std::string &date)
 	return true;
 }
 
-bool BitcoinExchange::validFormat(const std::string &line, std::string &date)
-{	
+/**
+ * Each line in this file must use the following format: "date | value".
+ * A valid date will always be in the following format: Year-Month-Day.
+ * A valid value must be either a float or a positive integer, between 0 and 1000.
+ */
+bool BitcoinExchange::validFormat(const std::string &line, std::string &date, float &fvalue)
+{
+	if (line.find(" | ") == std::string::npos)
+	{
+		std::cerr << "Error: bad input => " << line << std::endl;
+		return false;
+	}
+	std::string value;
 	std::stringstream ss(line);
 	std::getline(ss, date, '|');// extract the date
-	// Each line check following format: "date | value"
-	if (line.find(" | ") == std::string::npos || !validDate(date))
+	std::getline(ss, value);// extract the value
+	
+	std::stringstream convert(value);
+	
+	convert >> fvalue;
+	
+	if (!validDate(date))
 	{
 		std::cerr << "Error: bad input => " << date << std::endl;
 		return false;
 	}
-	// if (!validDate(date))
-	// 	return false;
+	if (!validValue(fvalue))
+		return false;
 	return true;
 }
 
@@ -83,24 +114,11 @@ void BitcoinExchange::takeInput(const std::string &filename)
 	while (std::getline(ifs, line))
 	{
 		// std::cout << line << std::endl;
-		std::string date, value;
-		if (!validFormat(line, date))
+		std::string date;
+		float fvalue;
+		if (!validFormat(line, date, fvalue))
 			continue;
-		// std::cout << "date: " << date << std::endl;
-		// if (!validValue())
-		// {
-		// 	std::cerr << "Error: not a positive number." << std::endl;
-		// 	continue;
-		// }
-		// std::cerr << "Error: too large a number." << std::endl;
-		// std::getline(ss, value);// extract the value
-		// std::cout << "value: " << value << std::endl;
-		// std::stringstream convert(value);
-		// float fvalue;
-		// convert >> fvalue;
-		// _database[date] = fvalue;
-		// std::cout << std::fixed << std::setprecision(2) << fvalue;
-		// evaluate();
+		
 	}
 	ifs.close();
 }
@@ -124,14 +142,11 @@ void BitcoinExchange::loadDataBasecsv(const std::string &filename)
 		std::stringstream ss(line);
 		std::string date, value;
 		std::getline(ss, date, ',');// extract the date
-		// std::cout << "date: " << date << std::endl;
 		std::getline(ss, value);// extract the value
-		// std::cout << "value: " << value << std::endl;
 		std::stringstream convert(value);
 		float fvalue;
 		convert >> fvalue;
 		_database[date] = fvalue;
-		// std::cout << std::fixed << std::setprecision(2) << fvalue;
 	}
 	// for (std::map<std::string, float>::iterator it = _database.begin(); it != _database.end(); it++)
 	// {

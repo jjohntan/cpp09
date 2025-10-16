@@ -6,7 +6,7 @@
 /*   By: jetan <jetan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 13:51:55 by jetan             #+#    #+#             */
-/*   Updated: 2025/10/15 19:39:06 by jetan            ###   ########.fr       */
+/*   Updated: 2025/10/16 09:02:38 by jetan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,12 @@ public:
 	~BitcoinExchange();// Destructor
 	void loadDataBasecsv(const std::string &filename);
 	void takeInput(const std::string &filename);
+	// exchangeRate();
 	
-	bool validFormat(const std::string &line, std::string &date);
+	bool validFormat(const std::string &line, std::string &date, float &fvalue);
 	bool validDate(std::string &date);
+	bool validValue(float &fvalue);
+	
 	bool isLeapYear(unsigned int year);
 };
 
