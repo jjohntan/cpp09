@@ -6,7 +6,7 @@
 /*   By: jetan <jetan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 13:51:50 by jetan             #+#    #+#             */
-/*   Updated: 2025/10/16 09:39:25 by jetan            ###   ########.fr       */
+/*   Updated: 2025/10/16 10:47:01 by jetan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,13 @@ bool BitcoinExchange::validFormat(const std::string &line, std::string &date, fl
 	std::getline(ss, date, '|');// extract the date
 	std::getline(ss, value);// extract the value
 	
+	std::cout << "space date: " << date << std::endl;
+	std::cout << "remove space value: " << value << std::endl;
+	// trim leading space
+	date.erase(0, date.find_first_not_of(" \t"));
+	value.erase(0, value.find_first_not_of(" \t"));
+	std::cout << "remove space date: " << date << std::endl;
+	std::cout << "remove space value: " << value << std::endl;
 	std::stringstream convert(value);
 	
 	convert >> fvalue;
