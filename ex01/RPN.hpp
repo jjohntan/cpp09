@@ -6,7 +6,7 @@
 /*   By: jetan <jetan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 11:43:06 by jetan             #+#    #+#             */
-/*   Updated: 2025/10/17 16:17:16 by jetan            ###   ########.fr       */
+/*   Updated: 2025/10/17 17:19:19 by jetan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ public:
 	RPN &operator=(const RPN &other);
 	~RPN();
 	void process(const std::string &expression);
-	void handleOperations();
+	bool handleOperations(const std::string &opt);
 	
 	bool isNumber(const std::string &token);
 	bool isOperator(const std::string &token);

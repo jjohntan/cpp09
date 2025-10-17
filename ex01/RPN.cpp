@@ -6,7 +6,7 @@
 /*   By: jetan <jetan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 11:43:09 by jetan             #+#    #+#             */
-/*   Updated: 2025/10/17 16:25:58 by jetan            ###   ########.fr       */
+/*   Updated: 2025/10/17 17:26:01 by jetan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,35 @@ bool RPN::isNumber(const std::string &token)
 	return (token.size() == 1 && token >= "0" && token <= "9");
 }
 
+bool RPN::handleOperations(const std::string &opt)
+{
+	int b = _stack.top();// Access the top element
+	_stack.pop();// Remove the last added element
+	int a = _stack.top();
+	_stack.pop();
+	int res = 0;
+	
+	if (opt == "+")
+		res = a + b;
+	else if (opt == "-")
+		res = a - b;
+	else if (opt == "*")
+		res = a * b;
+	else if (opt == "/")
+	{
+		if (b == 0)
+			return false;
+		res = a / b;
+	}
+	else
+	{
+		return false;
+	}
+		
+	_stack.push(res);
+	return true;
+}
+
 void RPN::process(const std::string &expression)
 {
 	std::istringstream iss(expression);
@@ -46,18 +75,33 @@ void RPN::process(const std::string &expression)
 			int num = token[0] - '0';// convert string to integer
 			_stack.push(num);
 		}
-		if (isOperator(token))
+		else if (isOperator(token))
 		{
-			std::cout << "is operator" << std::endl;
+			if (_stack.size() < 2)
+			{
+				std::cerr << "Error" << std::endl;
+				return ;
+			}
+			if (!handleOperations(token))
+			{
+				std::cerr << "Error" << std::endl;
+				return ;
+			}
+		}
+		else
+		{
+			std::cerr << "Error" << std::endl;
+			return ;
 		}
 	}
 	// printStack(_stack);
-	// check at least has one result
+	// check at least one result
 	if (_stack.size() != 1)
 	{
-		std::cerr  << "Error" << std::endl;
+		std::cerr << "Error" << std::endl;
 		return ;
 	}
+	std::cout << _stack.top() << std::endl;
 }
 
 RPN &RPN::operator=(const RPN &other)
