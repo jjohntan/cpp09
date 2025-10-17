@@ -6,7 +6,7 @@
 /*   By: jetan <jetan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 11:43:09 by jetan             #+#    #+#             */
-/*   Updated: 2025/10/17 17:26:01 by jetan            ###   ########.fr       */
+/*   Updated: 2025/10/17 17:31:44 by jetan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ void RPN::process(const std::string &expression)
 		std::cerr << "Error" << std::endl;
 		return ;
 	}
+	// print result
 	std::cout << _stack.top() << std::endl;
 }
 
