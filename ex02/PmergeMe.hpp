@@ -6,23 +6,33 @@
 /*   By: jetan <jetan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 18:51:57 by jetan             #+#    #+#             */
-/*   Updated: 2025/10/17 19:00:00 by jetan            ###   ########.fr       */
+/*   Updated: 2025/10/20 18:54:46 by jetan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PMERGE_HPP
 # define PMERGE_HPP
 
+#include <deque>
+#include <vector>
 #include <iostream>
 
+/**
+ * why is vector and deque- merge-insert sort repeatedly access elements by index
+ */
 class PmergeMe
 {
 private:
-	/* data */
+	std::vector<int> _vector;
+	std::deque<int> _deque;
 public:
-	PmergeMe(/* args */);
+	// Default constructor
+	PmergeMe();
+	// Copy constructor
 	PmergeMe(const PmergeMe &other);
+	// Copy assignment operator
 	PmergeMe &operator=(const PmergeMe &other);
+	// Destructor
 	~PmergeMe();
 };
 
