@@ -6,7 +6,7 @@
 /*   By: jetan <jetan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 18:51:52 by jetan             #+#    #+#             */
-/*   Updated: 2025/10/17 19:04:31 by jetan            ###   ########.fr       */
+/*   Updated: 2025/10/21 18:31:12 by jetan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,22 @@ int main(int ac, char **av)
 {
 	if (ac < 2)
 	{
-		std::cerr << "Error: invalid input" << std::endl;
+		std::cerr << "Error" << std::endl;
 		return 1;
 	}
-	
+	for (int i = 1; i < ac; i++)
+	{
+		int n = std::atoi(av[i]);
+		if (n < 0)// check if non positive int
+		{
+			std::cerr << "Error" << std::endl;
+			return 1;
+		}
+		if (!std::isdigit(n))// check if is non char
+		{
+			std::cerr << "Error" << std::endl;
+			return 1;
+		}
+		std::cout << n;
+	}
 }
