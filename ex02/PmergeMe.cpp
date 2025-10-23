@@ -6,13 +6,39 @@
 /*   By: jetan <jetan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 18:51:54 by jetan             #+#    #+#             */
-/*   Updated: 2025/10/20 18:54:52 by jetan            ###   ########.fr       */
+/*   Updated: 2025/10/23 16:35:28 by jetan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PmergeMe.hpp"
 
-PmergeMe::PmergeMe(): _vector(0), _deque() {}
+void PmergeMe::printVector()
+{
+	for (std::vector<int>::iterator it = this->_vector.begin(); it < this->_vector.end(); it++)
+		std::cout << *it << std::endl;
+}
+
+bool PmergeMe::takeInput(int ac, char **av)
+{
+	int n;
+	for (int i = 1; i < ac; i++)
+	{
+		std::string arg = av[i];
+		for (unsigned int j = 0; j < arg.size(); j++)
+		{
+			if (!std::isdigit(arg[j]))// check if is non char
+				return false;
+		}
+		n = std::atoi(av[i]);
+		if (n < 0)// check if non positive int
+			return false;
+		_vector.push_back(n);
+		_deque.push_back(n);
+	}
+	return true;
+}
+
+PmergeMe::PmergeMe(): _vector(0), _deque(0) {}
 
 PmergeMe::PmergeMe(const PmergeMe &other): _vector(other._vector),
 _deque(other._deque) {}
