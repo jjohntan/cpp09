@@ -6,7 +6,7 @@
 /*   By: jetan <jetan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 18:51:54 by jetan             #+#    #+#             */
-/*   Updated: 2025/10/23 16:35:28 by jetan            ###   ########.fr       */
+/*   Updated: 2025/10/24 19:37:56 by jetan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,30 @@ void PmergeMe::printVector()
 {
 	for (std::vector<int>::iterator it = this->_vector.begin(); it < this->_vector.end(); it++)
 		std::cout << *it << std::endl;
+}
+
+void PmergeMe::fJVector()
+{
+	if (_vector.size() < 2)
+		return;
+	int a = 0, b = 0, left = 0;
+	for (unsigned int i = 0; i < _vector.size() - 1; i += 2)
+	{
+		if (i + 1 < _vector.size())
+		{
+			a = _vector[i];
+			b = _vector[i + 1];
+		}
+		else
+		{
+			left = _vector[i];
+		}
+		std::cout << "a: " << a << std::endl;
+		std::cout << "b: " << b << std::endl;
+		std::cout << "left: " << left << std::endl;
+		if (a > b)
+			std::swap(a, b);
+	}
 }
 
 bool PmergeMe::takeInput(int ac, char **av)

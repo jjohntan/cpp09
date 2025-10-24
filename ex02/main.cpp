@@ -6,7 +6,7 @@
 /*   By: jetan <jetan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 18:51:52 by jetan             #+#    #+#             */
-/*   Updated: 2025/10/23 16:17:51 by jetan            ###   ########.fr       */
+/*   Updated: 2025/10/24 19:29:24 by jetan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,5 @@ int main(int ac, char **av)
 		std::cerr << "Error" << std::endl;
 		return 1;
 	}
+	pmm.fJVector();
 }
