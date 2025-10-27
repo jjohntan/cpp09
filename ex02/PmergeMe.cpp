@@ -6,7 +6,7 @@
 /*   By: jetan <jetan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 18:51:54 by jetan             #+#    #+#             */
-/*   Updated: 2025/10/24 19:37:56 by jetan            ###   ########.fr       */
+/*   Updated: 2025/10/27 20:28:54 by jetan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,28 +18,29 @@ void PmergeMe::printVector()
 		std::cout << *it << std::endl;
 }
 
-void PmergeMe::fJVector()
+void PmergeMe::fordJohnsonVector(std::vector<int> &_vector)
 {
 	if (_vector.size() < 2)
-		return;
-	int a = 0, b = 0, left = 0;
-	for (unsigned int i = 0; i < _vector.size() - 1; i += 2)
+		return ;
+	
+	std::vector<std::pair<int, int>> pairs;
+	
+	for (int i = 0; i < _vector.size(); i += 2)
 	{
 		if (i + 1 < _vector.size())
 		{
-			a = _vector[i];
-			b = _vector[i + 1];
+			pairs.push_back(std::make_pair(_vector[i], _vector[i + 1]));
 		}
 		else
 		{
-			left = _vector[i];
+			
 		}
-		std::cout << "a: " << a << std::endl;
-		std::cout << "b: " << b << std::endl;
-		std::cout << "left: " << left << std::endl;
-		if (a > b)
-			std::swap(a, b);
 	}
+}
+
+void PmergeMe::sort()
+{
+	fordJohnsonVector(_vector);
 }
 
 bool PmergeMe::takeInput(int ac, char **av)
@@ -48,7 +49,7 @@ bool PmergeMe::takeInput(int ac, char **av)
 	for (int i = 1; i < ac; i++)
 	{
 		std::string arg = av[i];
-		for (unsigned int j = 0; j < arg.size(); j++)
+		for (size_t j = 0; j < arg.size(); j++)
 		{
 			if (!std::isdigit(arg[j]))// check if is non char
 				return false;

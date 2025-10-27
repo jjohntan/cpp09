@@ -6,7 +6,7 @@
 /*   By: jetan <jetan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 18:51:57 by jetan             #+#    #+#             */
-/*   Updated: 2025/10/24 19:31:30 by jetan            ###   ########.fr       */
+/*   Updated: 2025/10/27 17:46:51 by jetan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ public:
 	~PmergeMe();
 	bool takeInput(int ac, char **av);
 	void printVector();
-	void fJVector();
+	void sort();
+	void fordJohnsonVector(std::vector<int> &_vector);
 };
 
 #endif
