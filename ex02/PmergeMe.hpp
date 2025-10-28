@@ -39,7 +39,8 @@ public:
 	~PmergeMe();
 	bool takeInput(int ac, char **av);
 	void printVector();
-	void fJVector();
+	void sort();
+	void fordJohnsonVector(std::vector<int> &vector);
 };
 
 #endif

@@ -18,28 +18,54 @@ void PmergeMe::printVector()
 		std::cout << *it << std::endl;
 }
 
-void PmergeMe::fJVector()
+void PmergeMe::fordJohnsonVector(std::vector<int> &_vector)
 {
 	if (_vector.size() < 2)
 		return;
-	int a = 0, b = 0, left = 0;
+	// Divide into pairs, sort pairs
+	std::vector<std::pair<int, int> > pairs;
+	int leftover = -1;
 	for (unsigned int i = 0; i < _vector.size() - 1; i += 2)
 	{
 		if (i + 1 < _vector.size())
 		{
-			a = _vector[i];
-			b = _vector[i + 1];
+			// first element larger than second element
+			if (_vector[i] > _vector[i + 1])
+				pairs.push_back(std::make_pair(_vector[i + 1], _vector[i]));// first smaller second larger
+			else
+				pairs.push_back(std::make_pair(_vector[i], _vector[i + 1]));
 		}
 		else
-		{
-			left = _vector[i];
-		}
-		std::cout << "a: " << a << std::endl;
-		std::cout << "b: " << b << std::endl;
-		std::cout << "left: " << left << std::endl;
-		if (a > b)
-			std::swap(a, b);
+			leftover = _vector[i];
 	}
+
+	std::vector<int> mainchain;
+	std::vector<int> pend;
+
+	// push smaller element to pend
+	// push larger element to mainchain
+	for (size_t i = 0; i < pairs.size(); ++i)
+	{
+		pend.push_back(pairs[i].first);
+		mainchain.push_back(pairs[i].second);
+	}
+
+	fordJohnsonVector(mainchain);
+
+	std::cout << "pend: ";
+	for (size_t i = 0; i < pend.size(); ++i)
+		std::cout << pend[i] << " ";
+	std::cout << std::endl;
+	std::cout << "mainchain: ";
+	for (size_t i = 0; i < mainchain.size(); ++i)
+		std::cout << mainchain[i] << " ";
+	std::cout << std::endl;
+	std::cout << "leftover: " << leftover << std::endl;
+}
+
+void PmergeMe::sort()
+{
+	fordJohnsonVector(_vector);
 }
 
 bool PmergeMe::takeInput(int ac, char **av)

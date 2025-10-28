@@ -25,5 +25,6 @@ int main(int ac, char **av)
 		std::cerr << "Error" << std::endl;
 		return 1;
 	}
-	pmm.fJVector();
+	pmm.sort();
+	// pmm.fordJohnsonVector();
 }
