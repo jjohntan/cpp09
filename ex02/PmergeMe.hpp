@@ -41,6 +41,7 @@ public:
 	void printVector();
 	void sort();
 	void fordJohnsonVector(std::vector<int> &vector);
+	int JacobsthalN(int n);
 };
 
 #endif

@@ -18,6 +18,26 @@ void PmergeMe::printVector()
 		std::cout << *it << std::endl;
 }
 
+int PmergeMe::JacobsthalN(int n)
+{
+	if (n == 0)
+		return 0;
+	if (n == 1)
+		return 1;
+	
+	int a = 0;
+	int b = 1;
+	int res = 0;
+
+	for (int i = 2; i <= n; ++i)
+	{
+		res = b + 2 * a;
+		a = b;
+		b = res;
+	}
+	return res;
+}
+
 void PmergeMe::fordJohnsonVector(std::vector<int> &_vector)
 {
 	if (_vector.size() < 2)
@@ -52,15 +72,6 @@ void PmergeMe::fordJohnsonVector(std::vector<int> &_vector)
 
 	fordJohnsonVector(mainchain);
 
-	std::cout << "pend: ";
-	for (size_t i = 0; i < pend.size(); ++i)
-		std::cout << pend[i] << " ";
-	std::cout << std::endl;
-	std::cout << "mainchain: ";
-	for (size_t i = 0; i < mainchain.size(); ++i)
-		std::cout << mainchain[i] << " ";
-	std::cout << std::endl;
-	std::cout << "leftover: " << leftover << std::endl;
 }
 
 void PmergeMe::sort()
