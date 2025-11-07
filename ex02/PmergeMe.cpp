@@ -18,65 +18,116 @@ void PmergeMe::printVector()
 		std::cout << *it << std::endl;
 }
 
-int PmergeMe::JacobsthalN(int n)
-{
-	if (n == 0)
-		return 0;
-	if (n == 1)
-		return 1;
+// std::vector<int> PmergeMe::JacobsthalNbr(int n)
+// {
+// 	std::vector<int> res;
+
+// 	if (n == 0)
+// 		return res;
+// 	res.push_back(1);
+// 	if (n == 1)
+// 		return res;
 	
-	int a = 0;
-	int b = 1;
-	int res = 0;
+// 	int a = 1, b = 1;
 
-	for (int i = 2; i <= n; ++i)
-	{
-		res = b + 2 * a;
-		a = b;
-		b = res;
-	}
-	return res;
-}
+// 	while (b < n)
+// 	{
+// 		int buff = b;
+// 		b = b + 2 * a;
+// 		a = buff;
+// 		if (b > n)// stop if exceed n
+// 			break;
+// 		res.push_back(b);// add to sequence
+// 	}
+// 	return res;
+// }
 
-void PmergeMe::fordJohnsonVector(std::vector<int> &_vector)
+// void PmergeMe::sortVector(std::vector<int> &arr)
+// {
+// 	if (arr.size() < 2)
+// 		return;
+// 	// Divide into pairs, sort pairs
+// 	std::vector<std::pair<int, int> > pairs;
+// 	int leftover = -1;
+// 	bool hasleftover = false;
+
+// 	for (unsigned int i = 0; i < arr.size() - 1; i += 2)
+// 	{
+// 		if (i + 1 < arr.size())
+// 		{
+// 			// first element larger than second element
+// 			if (arr[i] > arr[i + 1])
+// 			{
+// 				// first element smaller second element larger
+// 				pairs.push_back(std::make_pair(arr[i + 1], arr[i]));
+// 			}
+// 			else
+// 			{
+// 				pairs.push_back(std::make_pair(arr[i], arr[i + 1]));
+// 			}
+// 		}
+// 		else
+// 		{
+// 			hasleftover = true;
+// 			leftover = arr[i];
+// 		}
+// 	}
+
+// 	std::vector<int> mainchain;
+// 	std::vector<int> pend;
+
+// 	// push smaller element to pend
+// 	// push larger element to mainchain
+// 	for (size_t i = 0; i < pairs.size(); ++i)
+// 	{
+// 		pend.push_back(pairs[i].first);
+// 		mainchain.push_back(pairs[i].second);
+// 	}
+
+// 	// recursive
+// 	sortVector(mainchain);
+
+// 	// generate Jacobsthal number
+// 	std::vector<int> insert = JacobsthalNbr(pend.size());
+
+// 	for ()
+// 	{
+
+// 	}
+	
+// 	if (hasleftover)
+// 	{
+
+// 	}
+
+// 	// add sorted number in mainchain to container
+// 	_vector = mainchain;
+// }
+
+void PmergeMe::FordJohnson()
 {
-	if (_vector.size() < 2)
-		return;
-	// Divide into pairs, sort pairs
-	std::vector<std::pair<int, int> > pairs;
-	int leftover = -1;
-	for (unsigned int i = 0; i < _vector.size() - 1; i += 2)
-	{
-		if (i + 1 < _vector.size())
-		{
-			// first element larger than second element
-			if (_vector[i] > _vector[i + 1])
-				pairs.push_back(std::make_pair(_vector[i + 1], _vector[i]));// first smaller second larger
-			else
-				pairs.push_back(std::make_pair(_vector[i], _vector[i + 1]));
-		}
-		else
-			leftover = _vector[i];
-	}
+	std::cout << "Before:  ";
+	for (std::vector<int>::iterator it = this->_vector.begin(); it < this->_vector.end(); it++)
+		std::cout << *it << " ";
+	std::cout << std::endl;
+	clock_t start_v = clock();
+	// sortVector(_vector);
+	clock_t end_v = clock();
+	double time_v = (double)(end_v - start_v) / CLOCKS_PER_SEC * 1000000;
 
-	std::vector<int> mainchain;
-	std::vector<int> pend;
+	clock_t start_d = clock();
+	
+	clock_t end_d = clock();
+	double time_d = (double)(end_d - start_d) / CLOCKS_PER_SEC * 1000000;
+	std::cout << "After:   ";
+	for (std::vector<int>::iterator it = this->_vector.begin(); it < this->_vector.end(); it++)
+		std::cout << *it << " ";
+	std::cout << std::endl;
 
-	// push smaller element to pend
-	// push larger element to mainchain
-	for (size_t i = 0; i < pairs.size(); ++i)
-	{
-		pend.push_back(pairs[i].first);
-		mainchain.push_back(pairs[i].second);
-	}
-
-	fordJohnsonVector(mainchain);
-
-}
-
-void PmergeMe::sort()
-{
-	fordJohnsonVector(_vector);
+	std::cout << "Time to process a range of " << 5 << " elements with std::vector : "
+	 << time_v << " us" << std::endl;
+	std::cout << "Time to process a range of " << 5 << " elements with std::deque  : "
+	 << time_d << " us" << std::endl;
 }
 
 bool PmergeMe::takeInput(int ac, char **av)

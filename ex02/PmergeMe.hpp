@@ -39,9 +39,9 @@ public:
 	~PmergeMe();
 	bool takeInput(int ac, char **av);
 	void printVector();
-	void sort();
-	void fordJohnsonVector(std::vector<int> &vector);
-	int JacobsthalN(int n);
+	void FordJohnson();
+	void sortVector(std::vector<int> &arr);
+	std::vector<int> JacobsthalNbr(int n);
 };
 
 #endif
