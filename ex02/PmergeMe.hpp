@@ -40,8 +40,7 @@ public:
 	bool takeInput(int ac, char **av);
 	void printVector();
 	void FordJohnson();
-	void sortVector(std::vector<int> &arr);
-	std::vector<int> JacobsthalNbr(int n);
+	void sortVector(std::vector<int> &arr, int pair_lvl);
 };
 
 #endif

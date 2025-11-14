@@ -12,97 +12,21 @@
 
 #include "PmergeMe.hpp"
 
-void PmergeMe::printVector()
+void PmergeMe::sortVector(std::vector<int> &arr, int pair_lvl)
 {
-	for (std::vector<int>::iterator it = this->_vector.begin(); it < this->_vector.end(); it++)
-		std::cout << *it << std::endl;
+	std::vector<int>::iterator it;
+
+	// calculate how many pair in level
+	int pair_per_lvl = arr.size() / pair_lvl;
+	if (pair_per_lvl < 2)
+		return;
+	
+	// if is odd
+	bool is_odd = pair_per_lvl % 2 == 1;
+
+	// if (is_odd == true)
+	// 	std::cout << "odd" << std::endl;
 }
-
-// std::vector<int> PmergeMe::JacobsthalNbr(int n)
-// {
-// 	std::vector<int> res;
-
-// 	if (n == 0)
-// 		return res;
-// 	res.push_back(1);
-// 	if (n == 1)
-// 		return res;
-	
-// 	int a = 1, b = 1;
-
-// 	while (b < n)
-// 	{
-// 		int buff = b;
-// 		b = b + 2 * a;
-// 		a = buff;
-// 		if (b > n)// stop if exceed n
-// 			break;
-// 		res.push_back(b);// add to sequence
-// 	}
-// 	return res;
-// }
-
-// void PmergeMe::sortVector(std::vector<int> &arr)
-// {
-// 	if (arr.size() < 2)
-// 		return;
-// 	// Divide into pairs, sort pairs
-// 	std::vector<std::pair<int, int> > pairs;
-// 	int leftover = -1;
-// 	bool hasleftover = false;
-
-// 	for (unsigned int i = 0; i < arr.size() - 1; i += 2)
-// 	{
-// 		if (i + 1 < arr.size())
-// 		{
-// 			// first element larger than second element
-// 			if (arr[i] > arr[i + 1])
-// 			{
-// 				// first element smaller second element larger
-// 				pairs.push_back(std::make_pair(arr[i + 1], arr[i]));
-// 			}
-// 			else
-// 			{
-// 				pairs.push_back(std::make_pair(arr[i], arr[i + 1]));
-// 			}
-// 		}
-// 		else
-// 		{
-// 			hasleftover = true;
-// 			leftover = arr[i];
-// 		}
-// 	}
-
-// 	std::vector<int> mainchain;
-// 	std::vector<int> pend;
-
-// 	// push smaller element to pend
-// 	// push larger element to mainchain
-// 	for (size_t i = 0; i < pairs.size(); ++i)
-// 	{
-// 		pend.push_back(pairs[i].first);
-// 		mainchain.push_back(pairs[i].second);
-// 	}
-
-// 	// recursive
-// 	sortVector(mainchain);
-
-// 	// generate Jacobsthal number
-// 	std::vector<int> insert = JacobsthalNbr(pend.size());
-
-// 	for ()
-// 	{
-
-// 	}
-	
-// 	if (hasleftover)
-// 	{
-
-// 	}
-
-// 	// add sorted number in mainchain to container
-// 	_vector = mainchain;
-// }
 
 void PmergeMe::FordJohnson()
 {
@@ -111,7 +35,7 @@ void PmergeMe::FordJohnson()
 		std::cout << *it << " ";
 	std::cout << std::endl;
 	clock_t start_v = clock();
-	// sortVector(_vector);
+	sortVector(_vector, 1);
 	clock_t end_v = clock();
 	double time_v = (double)(end_v - start_v) / CLOCKS_PER_SEC * 1000000;
 
