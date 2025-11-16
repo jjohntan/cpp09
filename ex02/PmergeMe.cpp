@@ -81,6 +81,8 @@ void PmergeMe::sortVector(std::vector<int> &arr, int pair_lvl)
 	}
 
 	sortVector(arr, pair_lvl * 2);
+
+	
 	_vector = arr;
 }
 
