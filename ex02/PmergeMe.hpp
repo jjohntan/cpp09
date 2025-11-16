@@ -41,6 +41,10 @@ public:
 	void printVector();
 	void FordJohnson();
 	void sortVector(std::vector<int> &arr, int pair_lvl);
+
+	bool larger_comp(std::vector<int>::iterator curr, std::vector<int>::iterator nxt);
+	void swap_pair(std::vector<int>::iterator curr_pair, int pair_lvl);
+	int nbr_comp;
 };
 
 #endif

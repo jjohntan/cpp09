@@ -12,6 +12,28 @@
 
 #include "PmergeMe.hpp"
 
+void PmergeMe::swap_pair(std::vector<int>::iterator curr_pair, int pair_lvl)
+{
+	std::vector<int>::iterator start = curr_pair;
+	std::advance(start, -pair_lvl + 1);
+	std::vector<int>::iterator end = curr_pair;
+	std::advance(end, pair_lvl);
+
+	while (start != end)
+	{
+		std::vector<int>::iterator swap_ = start;
+		std::advance(swap_, pair_lvl);
+		std::iter_swap(start, swap_);
+		start++;
+	}
+}
+
+bool PmergeMe::larger_comp(std::vector<int>::iterator curr, std::vector<int>::iterator nxt)
+{
+	nbr_comp++;
+	return *nxt < *curr;
+}
+
 void PmergeMe::sortVector(std::vector<int> &arr, int pair_lvl)
 {
 	std::vector<int>::iterator it;
@@ -25,7 +47,41 @@ void PmergeMe::sortVector(std::vector<int> &arr, int pair_lvl)
 	bool is_odd = pair_per_lvl % 2 == 1;
 
 	// if (is_odd == true)
-	// 	std::cout << "odd" << std::endl;
+	// 	std::cout << "is odd" << std::endl;
+
+	// iterator of start of container
+	std::vector<int>::iterator start = arr.begin();
+	// iterator after completed pair
+	std::vector<int>::iterator after_pair = arr.begin();
+	std::advance(after_pair, pair_lvl * pair_per_lvl);
+	// iterator of last element
+	std::vector<int>::iterator last_element = after_pair;
+
+	if (is_odd)
+		std::advance(last_element, -pair_lvl);
+
+	int jump = 2 * pair_lvl;
+	std::cout << "jump: " << jump << std::endl;
+
+	for (std::vector<int>::iterator it = start; it != last_element; std::advance(it, jump))
+	{
+		// iterator of last element in current pair
+		std::vector<int>::iterator curr_pair = it;
+		std::advance(curr_pair, pair_lvl - 1);
+		// iterator of last element in next pair
+		std::vector<int>::iterator nxt_pair = it;
+		std::advance(nxt_pair, pair_lvl * 2 - 1);
+
+		if (larger_comp(curr_pair, nxt_pair))
+		{
+			swap_pair(curr_pair, pair_lvl);
+		}
+		// std::cout << "this_pair: " << *curr_pair << "\n";
+        // std::cout << "next_pair: " << *nxt_pair << "\n";
+	}
+
+	sortVector(arr, pair_lvl * 2);
+	_vector = arr;
 }
 
 void PmergeMe::FordJohnson()
