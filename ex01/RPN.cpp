@@ -65,6 +65,7 @@ bool RPN::handleOperations(const std::string &opt)
 
 void RPN::process(const std::string &expression)
 {
+	// take string extract value
 	std::istringstream iss(expression);
 	std::string token;
 	
