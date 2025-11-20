@@ -19,7 +19,6 @@ int main(int ac, char **av)
 		std::cerr << "Error: could not open file." << std::endl;
 		return 1;
 	}
-	(void)av;
 	BitcoinExchange btc;
 	btc.loadDataBasecsv("data.csv");
 	btc.takeInput(av[1]);

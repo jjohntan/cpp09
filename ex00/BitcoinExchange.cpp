@@ -99,12 +99,6 @@ bool BitcoinExchange::validFormat(const std::string &line, std::string &date, fl
 	std::getline(ss, date, '|');// extract the date
 	std::getline(ss, value);// extract the value
 	
-	// trim leading space
-	date.erase(0, date.find_first_not_of(" \t"));
-	date.erase(date.find_first_not_of(" \t") + 1);
-	value.erase(0, value.find_first_not_of(" \t"));
-	value.erase(value.find_first_not_of(" \t") + 1);
-	
 	if (date.empty() || value.empty())
 	{
 		std::cerr << "Error: bad input => " << line << std::endl;
