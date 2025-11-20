@@ -13,6 +13,7 @@
 #ifndef PMERGE_HPP
 # define PMERGE_HPP
 
+#include <iomanip>
 #include <algorithm>
 #include <cmath>
 #include <utility>
@@ -55,6 +56,14 @@ bool elementComp(T a, T b)
 
 /**
  * why is vector and deque- merge-insert sort repeatedly access elements by index
+ * 
+ * Vector = one contiguous block of memory
+ * std::vector stores all elements in a single continuous array:
+ * [ 1 ][ 2 ][ 3 ][ 4 ][ 5 ][ 6 ]
+ * Deque = many small memory blocks (not contiguous)
+ * [block][block][block][block]
+ * Each block has, e.g., 512 bytes or 4096 bytes.
+ * Elements are not stored contiguously.
  */
 class PmergeMe
 {
@@ -74,6 +83,7 @@ class PmergeMe
 	void FordJohnson();
 	long jacobsthalNbr(long n);	
 	void sortVector(std::vector<int> &arr, int pair_lvl);
+	void sortDeque(std::deque<int> &arr, int pair_lvl);
 };
 
 #endif
