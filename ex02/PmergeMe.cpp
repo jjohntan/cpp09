@@ -12,82 +12,205 @@
 
 #include "PmergeMe.hpp"
 
-void PmergeMe::swap_pair(std::vector<int>::iterator curr_pair, int pair_lvl)
+long PmergeMe::jacobsthalNbr(long n)
 {
-	std::vector<int>::iterator start = curr_pair;
-	std::advance(start, -pair_lvl + 1);
-	std::vector<int>::iterator end = curr_pair;
-	std::advance(end, pair_lvl);
-
-	while (start != end)
-	{
-		std::vector<int>::iterator swap_ = start;
-		std::advance(swap_, pair_lvl);
-		std::iter_swap(start, swap_);
-		start++;
-	}
-}
-
-bool PmergeMe::larger_comp(std::vector<int>::iterator curr, std::vector<int>::iterator nxt)
-{
-	nbr_comp++;
-	return *nxt < *curr;
+	return round((pow(2, n + 1) + pow(-1, n)) / 3);
 }
 
 void PmergeMe::sortVector(std::vector<int> &arr, int pair_lvl)
 {
-	std::vector<int>::iterator it;
+	// pointing to int inside arr
+	typedef std::vector<int>::iterator vec_it;
 
-	// calculate how many pair in level
-	int pair_per_lvl = arr.size() / pair_lvl;
-	if (pair_per_lvl < 2)
+	// calculate how many element in the level
+	int element_lvl = arr.size() / pair_lvl;
+	std::cout << "array size: " << arr.size() << " / pair level: "<< pair_lvl << " element in the level: " << element_lvl << std::endl;
+	if (element_lvl < 2)
 		return;
 	
-	// if is odd
-	bool is_odd = pair_per_lvl % 2 == 1;
-
+	// if is total odd elements
+	bool is_odd = element_lvl % 2 == 1;
 	// if (is_odd == true)
 	// 	std::cout << "is odd" << std::endl;
 
 	// iterator of start of container
-	std::vector<int>::iterator start = arr.begin();
-	// iterator after completed pair
-	std::vector<int>::iterator after_pair = arr.begin();
-	std::advance(after_pair, pair_lvl * pair_per_lvl);
-	// iterator of last element
-	std::vector<int>::iterator last_element = after_pair;
+	vec_it start = arr.begin();
+	std::cout << "start: " << *start << std::endl;
 
-	if (is_odd)
-		std::advance(last_element, -pair_lvl);
+	// iterator after completed pair
+	vec_it after_pair = advanceIt(arr.begin(), pair_lvl * (element_lvl));
+	std::cout << "after pair: " << *after_pair << std::endl;
+
+	// iterator of last element
+	vec_it last_element = advanceIt(after_pair, -(is_odd * pair_lvl));
+	// std::cout << "last element: " << *last_element << std::endl;
 
 	int jump = 2 * pair_lvl;
-	std::cout << "jump: " << jump << std::endl;
+	// std::cout << "jump: " << jump << std::endl;
 
-	for (std::vector<int>::iterator it = start; it != last_element; std::advance(it, jump))
+	// loop through each pair element
+	for (vec_it it = start; it != last_element; std::advance(it, jump))
 	{
-		// iterator of last element in current pair
-		std::vector<int>::iterator curr_pair = it;
-		std::advance(curr_pair, pair_lvl - 1);
-		// iterator of last element in next pair
-		std::vector<int>::iterator nxt_pair = it;
-		std::advance(nxt_pair, pair_lvl * 2 - 1);
+		// (1-1=0), (2-1=1), (4-1=3)
+		vec_it b = advanceIt(it, pair_lvl - 1);
+		std::cout << "b: " << *b << std::endl;
+		
+		// (1*2-1=1), (2*2-1=3), (4*2-1=7)
+		vec_it a = advanceIt(it, pair_lvl * 2 - 1);
+		std::cout << "a: " << *a << std::endl;
 
-		if (larger_comp(curr_pair, nxt_pair))
+		// if a is smaller than b
+		if (elementComp(a, b))
 		{
-			swap_pair(curr_pair, pair_lvl);
+			swap_pair(b, pair_lvl);
 		}
-		// std::cout << "this_pair: " << *curr_pair << "\n";
-        // std::cout << "next_pair: " << *nxt_pair << "\n";
+		std::cout << "after swap b: " << *b << std::endl;
+        std::cout << "after swap a: " << *a << std::endl;
 	}
 
 	sortVector(arr, pair_lvl * 2);
 
+	std::cout << "after finished pair and swap: ";
+	for (std::vector<int>::iterator it = arr.begin(); it < arr.end(); it++)
+		std::cout << *it << " ";
+	std::cout << std::endl;
+	std::vector<vec_it> mainchain;
+	std::vector<vec_it> pend;
 	
-	_vector = arr;
+	// initialize mainchain the last element of pair
+	mainchain.insert(mainchain.end(), advanceIt(arr.begin(), pair_lvl - 1));
+	mainchain.insert(mainchain.end(), advanceIt(arr.begin(), pair_lvl * 2 - 1));
+
+	// std::cout << "init mainchain: ";
+	// for (std::vector<vec_it>::iterator it = mainchain.begin(); it < mainchain.end(); it++)
+	// 	std::cout << **it << " ";
+	// std::cout << std::endl;
+
+	// insert rest of b into pend, a into mainchain
+	for (int i = 4; i <= element_lvl; i += 2)
+	{
+		pend.insert(pend.end(), advanceIt(arr.begin(), pair_lvl * (i - 1) - 1));
+		mainchain.insert(mainchain.end(), advanceIt(arr.begin(), pair_lvl * i - 1));
+	}
+
+	// insert leftover odd element to the end of pend
+	if (is_odd)
+	{
+		pend.insert(pend.end(), advanceIt(last_element, pair_lvl - 1));
+		std::cout << "is odd pend: ";
+		for (std::vector<std::vector<int>::iterator>::iterator it = pend.begin(); it != pend.end(); ++it)
+	    	std::cout << **it << " ";
+		std::cout << std::endl;
+	}
+
+	// start from jacobsthal J(1)
+	int prev_jacob = jacobsthalNbr(1);
+	std::cout << "prev_jacob: " << prev_jacob << std::endl;
+
+	// how many elements inserted
+	int inserted_nbr = 0;
+
+	// ;; infinite loop
+	// insert pend using jacobsthal
+	for (int k = 2;; k++)
+	{
+		// next jacobsthal number J(k)
+		int curr_jacob = jacobsthalNbr(k);
+		// std::cout << "current jacob: " << curr_jacob << std::endl;
+
+		// how many new elements insert in this loop J(k) - J(k-1)
+		int jacob_diff = curr_jacob - prev_jacob;
+		std::cout << "jacob difference: " << jacob_diff << std::endl;
+
+		int bound_shift = 0;
+
+		// break if not enough element in pend for current jacobsthal number
+		if (jacob_diff > static_cast<int>(pend.size()))
+			break;
+
+		// how many will be inserted in this loop
+		int curr_inserted_nbr = jacob_diff;
+		// std::cout << "current inserted number: " << curr_inserted_nbr << std::endl;
+
+		// the last element of the current Jacobsthal group inside pend
+		//  2 , 1  e.g.jacob_diff=2
+		// [B1, B2, B3, B4]
+		std::vector<vec_it>::iterator pend_it = advanceIt(pend.begin(), jacob_diff - 1);
+
+		// sets the upper search boundary for binary search
+		std::vector<vec_it>::iterator bound_it = advanceIt(mainchain.begin(), curr_jacob + inserted_nbr);
+
+		while (curr_inserted_nbr)
+		{
+			// binary search insertion point for current pend element
+			std::vector<vec_it>::iterator insertion_point =
+			 std::upper_bound(mainchain.begin(), bound_it, *pend_it, elementComp<vec_it>);// functor<type>
+			std::cout << "insertion point: " << **insertion_point << std::endl;
+
+			// insert element into mainchain
+			std::vector<vec_it>::iterator inserted = mainchain.insert(insertion_point, *pend_it);
+			curr_inserted_nbr--;
+			// remove the element from pend
+			pend_it = pend.erase(pend_it);
+			// move back one position to get the next element
+			std::advance(pend_it, -1);
+			
+			bound_shift += (inserted - mainchain.begin()) == curr_jacob + inserted_nbr;
+			std::cout << "bound_shift: " << bound_shift << std::endl;
+
+			bound_it = advanceIt(mainchain.begin(), curr_jacob + inserted_nbr - bound_shift);
+			std::cout << "bound_it: " << **bound_it << std::endl;
+		}
+		// after finishing the group shift previous jacob forward
+		prev_jacob = curr_jacob;
+		std::cout << "after finishing previous jacob: " << prev_jacob << std::endl;
+		// how many pend element inserted
+		inserted_nbr += jacob_diff;
+		std::cout << "inserted_nbr: " << inserted_nbr << std::endl;
+		bound_shift = 0;
+	}
+
+	// insert the elements that left after insertion of Jacobsthal sequence
+	for (int i = pend.size() - 1; i >= 0; i--)
+	{
+		std::vector<vec_it>::iterator curr_pend = advanceIt(pend.begin(), i);
+		std::vector<vec_it>::iterator curr_bound = advanceIt(mainchain.begin(), mainchain.size() - pend.size() + i + is_odd);
+		std::vector<vec_it>::iterator insertion_point =
+		 std::upper_bound(mainchain.begin(), curr_bound, *curr_pend, elementComp<vec_it>);
+		// insert the element from pend to mainchain
+		mainchain.insert(insertion_point, *curr_pend);
+	}
+
+	// right now mainchain only contain iterator pointing to element
+	// use copy vector to store value of iterator
+	std::vector<int> copy;
+	// allocate memory size same as arr(pre-malloc)
+	copy.reserve(arr.size());
+	for (std::vector<vec_it>::iterator it = mainchain.begin(); it != mainchain.end(); it++)
+	{
+		for (int i = 0; i < pair_lvl; i++)
+		{
+			vec_it pair_start = *it;// iterator to the element of mainchain
+			std::advance(pair_start, -pair_lvl + i + 1);// (,move to the start of the pair)
+			copy.insert(copy.end(), *pair_start);
+		}
+	}
+	
+	// overwrite the value in container
+	vec_it arr_it = arr.begin();
+	std::vector<int>::iterator copy_it = copy.begin();
+	while (copy_it != copy.end())
+	{
+		*arr_it = *copy_it;
+		arr_it++;
+		copy_it++;
+	}
 }
 
 void PmergeMe::FordJohnson()
 {
+	nbr_of_comps = 0;
+
 	std::cout << "Before:  ";
 	for (std::vector<int>::iterator it = this->_vector.begin(); it < this->_vector.end(); it++)
 		std::cout << *it << " ";
@@ -110,6 +233,7 @@ void PmergeMe::FordJohnson()
 	 << time_v << " us" << std::endl;
 	std::cout << "Time to process a range of " << 5 << " elements with std::deque  : "
 	 << time_d << " us" << std::endl;
+	 std::cout << "number of comparison: " << nbr_of_comps << std::endl;
 }
 
 bool PmergeMe::takeInput(int ac, char **av)
