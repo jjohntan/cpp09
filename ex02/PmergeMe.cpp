@@ -28,7 +28,7 @@ void PmergeMe::sortDeque(std::deque<int> &arr, int pair_lvl)
 	bool is_odd = element_lvl % 2 == 1;
 
 	deq_it start = arr.begin();
-	deq_it after_pair = advanceIt(arr.begin(), pair_lvl * (element_lvl));
+	deq_it after_pair = advanceIt(arr.begin(), pair_lvl * element_lvl);
 	deq_it last_element = advanceIt(after_pair, -(is_odd * pair_lvl));
 
 	int jump = 2 * pair_lvl;
@@ -137,7 +137,8 @@ void PmergeMe::sortVector(std::vector<int> &arr, int pair_lvl)
 
 	// calculate how many element in the level
 	int element_lvl = arr.size() / pair_lvl;
-	// std::cout << "array size: " << arr.size() << " / pair level: "<< pair_lvl << " element in the level: " << element_lvl << std::endl;
+	// std::cout << "array size: " << arr.size() << " / pair level: "<< pair_lvl
+	//  << " element in the level: " << element_lvl << std::endl;
 	if (element_lvl < 2)
 		return;
 	
@@ -151,7 +152,7 @@ void PmergeMe::sortVector(std::vector<int> &arr, int pair_lvl)
 	// std::cout << "start: " << *start << std::endl;
 
 	// iterator after completed pair
-	vec_it after_pair = advanceIt(arr.begin(), pair_lvl * (element_lvl));
+	vec_it after_pair = advanceIt(arr.begin(), pair_lvl * element_lvl);
 	// std::cout << "after pair: " << *after_pair << std::endl;
 
 	// iterator of last element
