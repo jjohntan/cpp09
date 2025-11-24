@@ -6,7 +6,7 @@
 /*   By: jetan <jetan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 18:51:54 by jetan             #+#    #+#             */
-/*   Updated: 2025/10/24 19:37:56 by jetan            ###   ########.fr       */
+/*   Updated: 2025/11/24 12:25:54 by jetan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ void PmergeMe::sortDeque(std::deque<int> &arr, int pair_lvl)
 
 	deq_it start = arr.begin();
 	deq_it after_pair = advanceIt(arr.begin(), pair_lvl * element_lvl);
-	deq_it last_element = advanceIt(after_pair, -(is_odd * pair_lvl));
+	deq_it last_pair = advanceIt(after_pair, -(is_odd * pair_lvl));
 
 	int jump = 2 * pair_lvl;
 
-	for (deq_it it = start; it != last_element; std::advance(it, jump))
+	for (deq_it it = start; it != last_pair; std::advance(it, jump))
 	{
 		deq_it b = advanceIt(it, pair_lvl - 1);
 		deq_it a = advanceIt(it, pair_lvl * 2 - 1);
@@ -60,7 +60,7 @@ void PmergeMe::sortDeque(std::deque<int> &arr, int pair_lvl)
 
 	if (is_odd)
 	{
-		pend.insert(pend.end(), advanceIt(last_element, pair_lvl - 1));
+		pend.insert(pend.end(), advanceIt(last_pair, pair_lvl - 1));
 	}
 
 	int prev_jacob = jacobsthalNbr(1);
@@ -156,14 +156,14 @@ void PmergeMe::sortVector(std::vector<int> &arr, int pair_lvl)
 	// std::cout << "after pair: " << *after_pair << std::endl;
 
 	// iterator of last element
-	vec_it last_element = advanceIt(after_pair, -(is_odd * pair_lvl));
-	// std::cout << "last element: " << *last_element << std::endl;
+	vec_it last_pair = advanceIt(after_pair, -(is_odd * pair_lvl));
+	// std::cout << "last element: " << *last_pair << std::endl;
 
 	int jump = 2 * pair_lvl;
 	// std::cout << "jump: " << jump << std::endl;
 
 	// loop through each pair element
-	for (vec_it it = start; it != last_element; std::advance(it, jump))
+	for (vec_it it = start; it != last_pair; std::advance(it, jump))
 	{
 		// (1-1=0), (2-1=1), (4-1=3)
 		vec_it b = advanceIt(it, pair_lvl - 1);
@@ -211,7 +211,7 @@ void PmergeMe::sortVector(std::vector<int> &arr, int pair_lvl)
 	// insert leftover odd element to the end of pend
 	if (is_odd)
 	{
-		pend.insert(pend.end(), advanceIt(last_element, pair_lvl - 1));
+		pend.insert(pend.end(), advanceIt(last_pair, pair_lvl - 1));
 		// std::cout << "is odd pend: ";
 		// for (std::vector<std::vector<int>::iterator>::iterator it = pend.begin(); it != pend.end(); ++it)
 	    // 	std::cout << **it << " ";
