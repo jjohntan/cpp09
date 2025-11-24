@@ -6,7 +6,7 @@
 /*   By: jetan <jetan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 18:51:54 by jetan             #+#    #+#             */
-/*   Updated: 2025/11/24 12:25:54 by jetan            ###   ########.fr       */
+/*   Updated: 2025/11/24 12:29:50 by jetan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,9 +155,9 @@ void PmergeMe::sortVector(std::vector<int> &arr, int pair_lvl)
 	vec_it after_pair = advanceIt(arr.begin(), pair_lvl * element_lvl);
 	// std::cout << "after pair: " << *after_pair << std::endl;
 
-	// iterator of last element
+	// iterator of start of last pair
 	vec_it last_pair = advanceIt(after_pair, -(is_odd * pair_lvl));
-	// std::cout << "last element: " << *last_pair << std::endl;
+	// std::cout << "last pair: " << *last_pair << std::endl;
 
 	int jump = 2 * pair_lvl;
 	// std::cout << "jump: " << jump << std::endl;
